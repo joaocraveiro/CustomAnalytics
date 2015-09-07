@@ -16,7 +16,7 @@ public class Application extends Controller {
 
     @Transactional
     public Result index() {
-        List<Aura> auras = (List<Aura>) JPA.em().createQuery("select a from Aura a").getResultList();
+        List<Aura> auras = (List<Aura>) JPA.em().createQuery("SELECT * FROM Aura").getResultList();
         return ok(index.render(auras));
     }
 
