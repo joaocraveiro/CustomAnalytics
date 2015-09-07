@@ -30,6 +30,7 @@ public class Application extends Controller {
         {
             aura = new Aura();
             aura.name = auraName;
+			aura.metrics = new ArrayList<Metric>();
             JPA.em().persist(aura);
         }
 
