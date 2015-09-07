@@ -1,0 +1,15 @@
+@(auras: List[Aura])
+
+@main("Aurasma Custom Analytics") {
+
+    <h1>Aurasma Custom Analytics Server</h1>
+
+    <br/>
+
+    <h2>Aura List:</h2>
+
+    @for(aura <- auras){
+        @aura.name
+    }
+
+}

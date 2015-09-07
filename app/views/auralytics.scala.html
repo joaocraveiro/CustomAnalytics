@@ -1,0 +1,147 @@
+@(metrics: List[Metric])
+
+@main("Aurasma Custom Analytics") {
+    <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
+
+    <!-- <ul id="metrics"></ul> -->
+
+    @if(metrics.isEmpty){
+            <h2>No data available yet!</h2>
+        } else {
+
+    @for(metric <- metrics){
+        <ul>@metric.name</ul>
+        <ul>@metric.value</ul>
+        <ul>@metric.date</ul>
+        <br/>
+    }
+
+    <br/><br/>
+
+
+    <h1>General Information</h1>
+    <h2>Aura Times</h2>
+    <div id="auratimes"></div>
+    <br/>
+
+    <h2>Time vs Ingredients</h2>
+    <div id="timeingredients"></div>
+    <br/>
+
+    <br/><br/>
+
+    <h1>Ingredients</h1>
+    <h2>Bun</h2>
+    <div id="bundonut"></div>
+    <h2>Cheese</h2>
+    <div id="cheesedonut"></div>
+    <h2>Sauce</h2>
+    <div id="saucedonut"></div>
+    <h2>Burger</h2>
+    <div id="burgerarea"></div>
+    <h2>Sauce</h2>
+    <div id="fresharea"></div>
+    <br/>
+    }
+
+
+
+    <script>
+
+      var metricsArray = [];
+    $(document).ready(function () {
+        @for(metric <- metrics){ metricsArray.push({ date: Date.parse('@metric.date'), value: @metric.value }); }
+
+    var data = [];
+
+    metricsArray.forEach(function(metric){
+        data.push({ date: metric.date, value: metric.value});
+    });
+
+new Morris.Line({
+  element: 'auratimes',
+  data: data,
+  xkey: 'date',
+  ykeys: ['value'],
+  labels: ['Value']
+});
+
+   new Morris.Bar({
+  element: 'timeingredients',
+  data: [
+    { y: '2006', a: 100, b: 90 },
+    { y: '2007', a: 75,  b: 65 },
+    { y: '2008', a: 50,  b: 40 },
+    { y: '2009', a: 75,  b: 65 },
+    { y: '2010', a: 50,  b: 40 },
+    { y: '2011', a: 75,  b: 65 },
+    { y: '2012', a: 100, b: 90 }
+  ],
+  xkey: 'y',
+  ykeys: ['a', 'b'],
+  labels: ['Series A', 'Series B']
+});
+
+        Morris.Donut({
+            element: 'bundonut',
+            data: [
+                {label: "Beef Burger", value: 12},
+                {label: "Egg", value: 30},
+                {label: "Bacon", value: 20}
+            ]
+        });
+
+        Morris.Donut({
+            element: 'cheesedonut',
+            data: [
+                {label: "Beef Burger", value: 12},
+                {label: "Egg", value: 30},
+                {label: "Bacon", value: 20}
+            ]
+        });
+
+        Morris.Donut({
+            element: 'saucedonut',
+            data: [
+                {label: "Beef Burger", value: 12},
+                {label: "Egg", value: 30},
+                {label: "Bacon", value: 20}
+            ]
+        });
+
+            Morris.Area({
+  element: 'burgerarea',
+  data: [
+    { y: '2006', a: 100, b: 90 },
+    { y: '2007', a: 75,  b: 65 },
+    { y: '2008', a: 50,  b: 40 },
+    { y: '2009', a: 75,  b: 65 },
+    { y: '2010', a: 50,  b: 40 },
+    { y: '2011', a: 75,  b: 65 },
+    { y: '2012', a: 100, b: 90 }
+  ],
+  xkey: 'y',
+  ykeys: ['a', 'b'],
+  labels: ['Series A', 'Series B']
+});
+
+    Morris.Area({
+  element: 'fresharea',
+  data: [
+    { y: '2006', a: 100, b: 90 },
+    { y: '2007', a: 75,  b: 65 },
+    { y: '2008', a: 50,  b: 40 },
+    { y: '2009', a: 75,  b: 65 },
+    { y: '2010', a: 50,  b: 40 },
+    { y: '2011', a: 75,  b: 65 },
+    { y: '2012', a: 100, b: 90 }
+  ],
+  xkey: 'y',
+  ykeys: ['a', 'b'],
+  labels: ['Series A', 'Series B']
+});
+});
+
+</script>
+
+}

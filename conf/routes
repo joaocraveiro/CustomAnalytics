@@ -1,0 +1,13 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                           controllers.Application.index()
+GET         /auralytics/:auraName       controllers.Application.auralytics(auraName: String)
+
+GET         /metric/:aura/:name/:value  controllers.Application.addMetric(aura: String, name: String, value: Integer)
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file               controllers.Assets.at(path="/public", file)
