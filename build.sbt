@@ -11,7 +11,7 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   javaJpa,
-  "org.hibernate" % "hibernate-entitymanager" % "5.0.1.Final"
+  "org.hibernate" % "hibernate-entitymanager" % "5.0.1.Final",
   "postgresql" % "postgresql" % "9.1-901-1.jdbc4"
 )
 
