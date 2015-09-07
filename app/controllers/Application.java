@@ -25,12 +25,12 @@ public class Application extends Controller {
         Aura aura;
         try {
             aura = JPA.em().createQuery("from Aura where name = :auraName", Aura.class)
-                    .setParameter("auraName", auraName).getSingleResult();
+						   .setParameter("auraName", auraName)
+						   .getSingleResult();
         } catch(Exception e)
         {
             aura = new Aura();
-            aura.name = auraName;
-			aura.metrics = new ArrayList<Metric>();
+            aura.name = auraName;			
             JPA.em().persist(aura);
         }
 
