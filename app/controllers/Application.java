@@ -24,19 +24,19 @@ public class Application extends Controller {
     @Transactional
     public Result auralytics(String auraName) {
         Aura aura;
-        /*try {
+        try {
             aura = JPA.em().createQuery("from Aura where name = :auraName", Aura.class)
 						   .setParameter("auraName", auraName)
 						   .getSingleResult();
         } catch(Exception e)
-        {*/
+        {
             aura = new Aura();
             aura.name = auraName;
             JPA.em().persist(aura);
-        //}
+        }
 
         //List<Metric> metrics = (List<Metric>) JPA.em().createQuery("select m from Metric m").getResultList();		
-        return ok(auralytics.render(new ArrayList<Metric>()));
+        return ok(auralytics.render(aura.metrics));
     }
 
 
