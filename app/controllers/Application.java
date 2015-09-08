@@ -23,14 +23,14 @@ public class Application extends Controller {
 
     @Transactional
     public Result auralytics(String auraName) {
-        //Aura aura;
+        Aura aura;
         /*try {
             aura = JPA.em().createQuery("from Aura where name = :auraName", Aura.class)
 						   .setParameter("auraName", auraName)
 						   .getSingleResult();
         } catch(Exception e)
         {*/
-            //aura = new Aura();
+            aura = new Aura();
             //aura.name = auraName;
             //JPA.em().persist(aura);
         //}
