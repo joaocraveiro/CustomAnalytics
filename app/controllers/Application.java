@@ -20,6 +20,10 @@ public class Application extends Controller {
         List<Aura> auras = (List<Aura>) JPA.em().createQuery("select a from Aura a").getResultList();
         return ok(index.render(auras));
     }
+	
+	public Result enjoy() {        
+        return ok(enjoy.render());
+    }
 
     @Transactional
     public Result auralytics(String auraName) {
@@ -53,7 +57,7 @@ public class Application extends Controller {
         JPA.em().persist(aura);
 
         List<Metric> metrics = aura.metrics;
-        return redirect(routes.Application.auralytics(auraName));
+        return redirect(routes.Application.enjoy());
     }
 
 }

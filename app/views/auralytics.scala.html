@@ -6,16 +6,6 @@
             <h2>No data available yet!</h2>
         } else {
 
-    /*@for(metric <- metrics){
-        <ul>@metric.name</ul>
-        <ul>@metric.value</ul>
-        <ul>@metric.date</ul>
-        <br/>
-    }
-
-    <br/><br/>*/
-
-
     <!-- <h1>General Information</h1>
     <h2>Aura Times</h2>
     <div id="auratimes"></div>
@@ -32,13 +22,17 @@
     <div id="bundonut"></div>
     <h2>Cheese</h2>
     <div id="cheesedonut"></div>
+	<h2>Burger</h2>
+	<div id="burgerdonut"></div>    
     <h2>Sauce</h2>
-    <div id="saucedonut"></div>
-    <h2>Burger</h2>
-    <div id="burgerarea"></div>
+	<div id="freshdonut"></div>    
+    <br/>   
     <h2>Sauce</h2>
-    <div id="fresharea"></div>
-    <br/>    
+    <div id="saucedonut"></div>  
+	
+	<br/><br/>    
+	<div id="burgerarea"></div>
+	<div id="fresharea"></div>
 	}
 	
 
@@ -49,6 +43,8 @@
 	  var databun = [];
 	  var datacheese = [];
 	  var datasauce = [];
+	  var databurger = [];
+	  var datafresh = [];
 	  
     $(document).ready(function () {
         
@@ -59,6 +55,10 @@
 		var beef = 0;
 		var bacon = 0;
 		var egg = 0;
+		
+		var lettuce = 0;
+		var jalapenos = 0;
+		var onion = 0;
 		
 		var seeded = 0;
 		var brioche = 0;
@@ -81,6 +81,18 @@
 			else if(metric.name == "bacon")
 			{
 				bacon++;
+			}
+				else if(metric.name == "lettuce")
+			{
+				lettuce++;
+			}
+				else if(metric.name == "jalapenos")
+			{
+				jalapenos++;
+			}
+				else if(metric.name == "onion")
+			{
+				onion++;
 			}
 			else if(metric.name == "colby")
 			{
@@ -122,6 +134,18 @@
 					{label: "BBQ", value: bbq},
 					{label: "Special", value: special}					
 				]
+				
+				databurger =  [
+					{label: "Beef Burger", value: burger},
+					{label: "Fried Egg", value: egg},
+					{label: "Bacon", value: bacon}
+				]
+				
+				datafresh =  [
+					{label: "Lettuce", value: lettuce},
+					{label: "Jalapenos", value: jalapenos},
+					{label: "Onion", value: onion}	
+				]
 		});				
 
 /*new Morris.Line({
@@ -159,6 +183,16 @@
         });
 
         Morris.Donut({
+            element: 'saucedonut',
+            data: datasauce
+        });
+		
+		 Morris.Donut({
+            element: 'saucedonut',
+            data: datasauce
+        });
+		
+		 Morris.Donut({
             element: 'saucedonut',
             data: datasauce
         });

@@ -4,6 +4,7 @@
 
 # Home page
 GET         /                           controllers.Application.index()
+GET         /enjoy                      controllers.Application.enjoy()
 GET         /auralytics/:auraName       controllers.Application.auralytics(auraName: String)
 
 GET         /metric/:aura/:name/:value  controllers.Application.addMetric(aura: String, name: String, value: Integer)
