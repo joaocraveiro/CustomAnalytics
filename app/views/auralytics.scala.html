@@ -31,7 +31,7 @@
     <div id="saucedonut"></div>  
 	
 	<br/><br/>    
-	<div id="burgerarea"></div>
+	<div id="burgerbar"></div>
 	<div id="fresharea"></div>
 	}
 	
@@ -157,7 +157,7 @@
 });
 
    new Morris.Bar({
-  element: 'timeingredients',
+  element: 'burgerbar',
   data: [
     { y: '2006', a: 100, b: 90 },
     { y: '2007', a: 75,  b: 65 },
@@ -197,8 +197,8 @@
             data: datasauce
         });
 
-            Morris.Area({
-  element: 'burgerarea',
+ new Morris.Bar({
+  element: 'burgerbar',
   data: [
     { y: '2006', a: 100, b: 90 },
     { y: '2007', a: 75,  b: 65 },
