@@ -31,7 +31,7 @@ public class Application extends Controller {
         } catch(Exception e)
         {*/
             aura = new Aura();
-            //aura.name = auraName;
+            aura.name = auraName;
             //JPA.em().persist(aura);
         //}
 
