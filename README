@@ -1,4 +1,9 @@
-This is your new Play application
+Custom Analytics v1.0
 =================================
 
-This file will be packaged with your application, when using `activator dist`.
+A REST application ready to register Auras, then add Metrics, and plot metrics for each aura.
+
+API:
+/ 										- aura list
+/auralytics/<AuraName> 					- To see aura analytics. If doesn't exist, this is the way to create a new Aura.
+/metrics/<AuraName>/<Metric>/<Value> 	- To add metric value.
