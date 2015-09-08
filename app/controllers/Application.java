@@ -32,7 +32,7 @@ public class Application extends Controller {
         {*/
             aura = new Aura();
             aura.name = auraName;
-            //JPA.em().persist(aura);
+            JPA.em().persist(aura);
         //}
 
         //List<Metric> metrics = (List<Metric>) JPA.em().createQuery("select m from Metric m").getResultList();		

@@ -18,5 +18,5 @@ public class Aura  {
     public String name;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="aura")
-    public List<Metric> metrics = new ArrayList<>();
+    public List<Metric> metrics = new ArrayList<Metric>();
 }
