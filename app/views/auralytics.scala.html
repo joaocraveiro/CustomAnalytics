@@ -1,4 +1,4 @@
-@(metrics: List[Metric])
+@(auraName: String, metrics: List[Metric])
 
 @main("Aurasma Custom Analytics") {   
 
@@ -6,147 +6,31 @@
             <h2>No data available yet!</h2>
         } else {
 
-    <!-- <h1>General Information</h1>
-    <h2>Aura Times</h2>
-    <div id="auratimes"></div>
-    <br/>
-
-    <h2>Time vs Ingredients</h2>
-    <div id="timeingredients"></div>
-    <br/>
-
-    <br/><br/> -->
-
-    <h1>Ingredients</h1>
-    <h2>Bun</h2>
-    <div id="bundonut"></div>
-    <h2>Cheese</h2>
-    <div id="cheesedonut"></div>
-	<h2>Burger</h2>
-	<div id="burgerdonut"></div>    
-    <h2>Sauce</h2>
-	<div id="freshdonut"></div>    
-    <br/>   
-    <h2>Sauce</h2>
-    <div id="saucedonut"></div>  
-	
-	<br/><br/>    
-	<div id="burgerbar"></div>
-	<div id="fresharea"></div>
+    <br/><br/>
+		@for(metric <- metrics){     
+			<h2>@metric.name</h2>
+			<div id="@metric.name"></div>
+			<br/>
+		}
 	}
 	
 
     <script>
 
-      var metricsArray = [];
-	  
-	  var databun = [];
-	  var datacheese = [];
-	  var datasauce = [];
-	  var databurger = [];
-	  var datafresh = [];
-	  
     $(document).ready(function () {
         
-		@for(metric <- metrics){ 		
-			metricsArray.push({ name: '@metric.name', value: @metric.value });
-		}			
-		
-		var beef = 0;
-		var bacon = 0;
-		var egg = 0;
-		
-		var lettuce = 0;
-		var jalapenos = 0;
-		var onion = 0;
-		
-		var seeded = 0;
-		var brioche = 0;
-		
-		var colby = 0;
-		var cheddar = 0;
-		
-		var bbq = 0;
-		var special = 0;
-
-		metricsArray.forEach(function(metric){		
-			if(metric.name == "beef")
-			{
-				beef++;
+		@for(metric <- metrics){
+		var metricData = [];
+			@for(metricEntry <- metric.metricEntries){
+				metricData.push({ label: '@metricEntry.name', value: @metricEntry.value });
 			}
-			else if(metric.name == "egg")
-			{
-				egg++;
-			}
-			else if(metric.name == "bacon")
-			{
-				bacon++;
-			}
-				else if(metric.name == "lettuce")
-			{
-				lettuce++;
-			}
-				else if(metric.name == "jalapenos")
-			{
-				jalapenos++;
-			}
-				else if(metric.name == "onion")
-			{
-				onion++;
-			}
-			else if(metric.name == "colby")
-			{
-				colby++;
-			}
-			else if(metric.name == "cheddar")
-			{
-				cheddar++;
-			}
-			else if(metric.name == "seeded")
-			{
-				seeded++;
-			}
-			else if(metric.name == "brioche")
-			{
-				brioche++;
-			}
-			else if(metric.name == "bbq")
-			{
-				bbq++;
-			}
-			else if(metric.name == "special")
-			{
-				special++;
-			}
-			
-			
-			 databun =  [
-					{label: "Seeded Bun", value: seeded},
-					{label: "Brioche", value: brioche}				
-				]
-				
-				datacheese =  [
-					{label: "Colby Jack", value: colby},
-					{label: "Cheddar", value: cheddar}				
-				]
-				
-				datasauce =  [
-					{label: "BBQ", value: bbq},
-					{label: "Special", value: special}					
-				]
-				
-				databurger =  [
-					{label: "Beef Burger", value: beef},
-					{label: "Fried Egg", value: egg},
-					{label: "Bacon", value: bacon}
-				]
-				
-				datafresh =  [
-					{label: "Lettuce", value: lettuce},
-					{label: "Jalapenos", value: jalapenos},
-					{label: "Onion", value: onion}	
-				]
-		});				
+							
+			Morris.Donut({
+				element: '@metric.name',
+				data: metricData
+			});
+		}		
+	});		
 
 /*new Morris.Line({
   element: 'auratimes',
@@ -171,66 +55,7 @@
   ykeys: ['a', 'b'],
   labels: ['Series A', 'Series B']
 });*/
-
-        Morris.Donut({
-            element: 'bundonut',
-            data: databun
-        });
-
-        Morris.Donut({
-            element: 'cheesedonut',
-            data: datacheese
-        });
-
-        Morris.Donut({
-            element: 'burgerdonut',
-            data: databurger
-        });
-		
-		 Morris.Donut({
-            element: 'freshdonut',
-            data: datafresh
-        });
-		
-		 Morris.Donut({
-            element: 'saucedonut',
-            data: datasauce
-        });
-
- new Morris.Bar({
-  element: 'burgerbar',
-  data: [
-    { y: '2006', a: 100, b: 90 },
-    { y: '2007', a: 75,  b: 65 },
-    { y: '2008', a: 50,  b: 40 },
-    { y: '2009', a: 75,  b: 65 },
-    { y: '2010', a: 50,  b: 40 },
-    { y: '2011', a: 75,  b: 65 },
-    { y: '2012', a: 100, b: 90 }
-  ],
-  xkey: 'y',
-  ykeys: ['a', 'b'],
-  labels: ['Series A', 'Series B']
-});
-
-    Morris.Area({
-  element: 'fresharea',
-  data: [
-    { y: '2006', a: 100, b: 90 },
-    { y: '2007', a: 75,  b: 65 },
-    { y: '2008', a: 50,  b: 40 },
-    { y: '2009', a: 75,  b: 65 },
-    { y: '2010', a: 50,  b: 40 },
-    { y: '2011', a: 75,  b: 65 },
-    { y: '2012', a: 100, b: 90 }
-  ],
-  xkey: 'y',
-  ykeys: ['a', 'b'],
-  labels: ['Series A', 'Series B']
-});
-
-});
-
+        
 </script>
 
 }
