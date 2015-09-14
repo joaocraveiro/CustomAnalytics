@@ -66,8 +66,8 @@ public class Application extends Controller {
 			return ok(message.render("ERROR: The Aura '" + auraName + "' doesn't."));
 		}
 			try{
-        metric = JPA.em().createQuery("from Metric where name = :metricName", Metric.class)
-                .setParameter("metricName", metricName).getSingleResult();
+			Metric metric = JPA.em().createQuery("from Metric where name = :metricName", Metric.class)
+                .setParameter("metricName", name).getSingleResult();
 				return ok(message.render("ERROR: The Metric '" + name + " already exists."));
 		}
 		catch(Exception e)
