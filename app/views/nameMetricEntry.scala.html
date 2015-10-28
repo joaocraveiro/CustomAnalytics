@@ -1,0 +1,20 @@
+@(auraName: String, metricName: String, value: Integer)
+
+@main(auraName) {   
+	
+	Insert your name: @* retrieve from local storage*@
+	<input type="text" id="playerName">
+	</br>
+	Score: @value
+	</br>
+	<button onclick="openURL('@routes.Application.createMetricEntry(auraName,metricName,"",value)')">Submit</button>
+		
+	<script>
+	function openURL(url){
+		var url = url;
+		url = url.substr(0, url.indexOf("//")) + "/" + document.getElementById("playerName").value + url.substr(url.indexOf("//")+1);
+		console.log(url);
+		window.open(url,"_self");
+	}
+	</script>
+}
