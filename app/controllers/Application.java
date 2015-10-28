@@ -49,7 +49,7 @@ public class Application extends Controller {
 			return ok(auralytics.render(aura.name, aura.metrics));
         } catch(Exception e)
         {
-               return ok(message.render("ERROR: The Aura '" + auraName + "' doesn't."));
+               return ok(message.render("ERROR: The Aura '" + auraName + "' doesn't exist."));
         }               
     }
 
@@ -106,24 +106,29 @@ public class Application extends Controller {
 		}
 		
 		try{
-        metricEntry = JPA.em().createQuery("from MetricEntry where name = :metricEntryName", MetricEntry.class)
+        /*metricEntry = JPA.em().createQuery("from MetricEntry where name = :metricEntryName", MetricEntry.class)
                 .setParameter("metricEntryName", name).getSingleResult();
 				     
-		metricEntry.value++;		
+		metricEntry.value++;
 		}
 		catch(Exception e)
-		{
-		metricEntry = new MetricEntry();        
+		{*/
+		metricEntry = new MetricEntry();
         metricEntry.name = name;
 		metricEntry.value = value;
         metricEntry.date = new Date();
 		
-		metricEntry.metric = metric;                
-		metric.metricEntries.add(metricEntry);        
-		}
+		metricEntry.metric = metric;
+		metric.metricEntries.add(metricEntry);
+		//}
    
         JPA.em().persist(metricEntry);
         return redirect(routes.Application.auralytics(auraName));
+    }
+	
+	@Transactional
+    public Result createUnnamedMetricEntry(String auraName, String metricName, Integer value) {
+		return ok(views.html.nameMetricEntry.render(auraName,metricName,value)); 
     }
 
 }
