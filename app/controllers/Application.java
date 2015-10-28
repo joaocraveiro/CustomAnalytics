@@ -105,8 +105,8 @@ public class Application extends Controller {
 			return ok(message.render("ERROR: Metric '" + metricName + "' doesn't exist."));
 		}
 		
-		try{
-        /*metricEntry = JPA.em().createQuery("from MetricEntry where name = :metricEntryName", MetricEntry.class)
+		/*try{
+        metricEntry = JPA.em().createQuery("from MetricEntry where name = :metricEntryName", MetricEntry.class)
                 .setParameter("metricEntryName", name).getSingleResult();
 				     
 		metricEntry.value++;
