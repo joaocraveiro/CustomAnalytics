@@ -10,11 +10,20 @@
 	<button onclick="openURL('@routes.Application.createMetricEntry(auraName,metricName,"",value)')">Submit</button>
 		
 	<script>
-	function openURL(url){
+	
+	
+	document.addEventListener("DOMContentLoaded", function(event) { 
+  		var name = localStorage.getItem("lunAR_playerName");		
+		if(name != null) name = JSON.parse(name);
+		document.getElementById("playerName").value = name;		
+	});
+	
+	function openURL(url){		
 		var url = url;
 		url = url.substr(0, url.indexOf("//")) + "/" + document.getElementById("playerName").value + url.substr(url.indexOf("//")+1);
-		console.log(url);
+		localStorage.setItem("lunAR_playerName",JSON.stringify(document.getElementById("playerName").value));		
 		window.open(url,"_self");
 	}
+	
 	</script>
 }
