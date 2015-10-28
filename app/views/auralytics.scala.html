@@ -1,16 +1,23 @@
 @(auraName: String, metrics: List[Metric])
 
-@main("Aurasma Custom Analytics") {   
+@main(auraName) {   
 
     @if(metrics.isEmpty){
             <h2>No data available yet!</h2>
-        } else {
-
-    <br/><br/>
-		@for(metric <- metrics){     
-			<h2>@metric.name</h2>
-			<div id="@metric.name"></div>
-			<br/>
+    } else {
+		<br/><br/>
+		@for(metric <- metrics){  
+			@if(metric.plotType == "scoreboard"){				
+				<ul>
+				@for(entry <- metric.metricEntries){
+					<li>@entry.name @entry.value</li>
+				}
+				</ul>
+			} else {
+				<h2>@metric.name</h2>
+				<div id="@metric.name"></div>
+				<br/>
+			}
 		}
 	}
 	
