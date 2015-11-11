@@ -2,17 +2,20 @@
 
 @main(auraName) {   
 
+<div class="container">
+
+<div class="title"><h3>@auraName</h3></div>
     @if(metrics.isEmpty){
             <h2>No data available yet!</h2>
     } else {
-		<br/><br/>
+		
 		@for(metric <- metrics){  
-			@if(metric.plotType == "scoreboard"){				
-				<ul>
-				@for(entry <- metric.metricEntries){
-					<li>@entry.name @entry.value</li>
-				}
-				</ul>
+			@if(metric.plotType == "scoreboard"){ 
+			<div class="stats">							
+				@for(entry <- metric.metricEntries){				
+					<span><div class="name">@entry.name</div> @entry.value</span></br>					
+				}				
+				</div>
 			} else {
 				<h2>@metric.name</h2>
 				<div id="@metric.name"></div>
@@ -20,6 +23,9 @@
 			}
 		}
 	}
+	
+	<img class="frame" src="@routes.Assets.at("images/frame.png")"></img>	
+	</div>
 	
 
     <script>
