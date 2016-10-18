@@ -1,6 +1,8 @@
 package models;
 
 import javax.persistence.*;
+import com.avaje.ebean.Model;
+import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -19,4 +21,13 @@ public class Aura  {
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="aura")
     public List<Metric> metrics = new ArrayList<Metric>();
+
+    public static Finder<Long,Aura> find = new Finder<Long,Aura>(
+        Long.class, Aura.class
+    );
+
+    public static Aura getAuraByName(String name){
+        Aura aura = Aura.find.where().eq("name", name).findUnique();
+        return aura;
+    }
 }

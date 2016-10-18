@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Model;
 import javax.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -24,4 +25,13 @@ public class Metric {
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="metric")
     public List<MetricEntry> metricEntries = new ArrayList<MetricEntry>();
+
+    public static Finder<Long,Metric> find = new Finder<Long,Metric>(
+        Long.class, Metric.class
+    );
+
+    public static Metric getMetricByName(String metricName){
+        Metric metric = Aura.find.where().eq("name", metricName).findUnique();
+        return metric;
+    }
 }

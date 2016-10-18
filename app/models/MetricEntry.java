@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Model;
 import javax.persistence.*;
 import java.util.Date;
 
@@ -23,4 +24,8 @@ public class MetricEntry {
 
     @ManyToOne
     public Metric metric;
+
+    public static Finder<Long,MetricEntry> find = new Finder<Long,MetricEntry>(
+        Long.class, MetricEntry.class
+    );
 }

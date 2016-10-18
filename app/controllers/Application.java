@@ -15,9 +15,13 @@ import java.util.ArrayList;
 
 public class Application extends Controller {
 
+ /**
+     * Renders the index view that lists all the registered auras.<br>
+     * @return 200 OK
+     */
     @Transactional
     public Result index() {
-        List<Aura> auras = (List<Aura>) JPA.em().createQuery("select a from Aura a").getResultList();
+        List<Aura> auras = Aura.find.all();
         return ok(index.render(auras));
     }
 	
@@ -34,7 +38,7 @@ public class Application extends Controller {
             aura = new Aura();
             aura.name = auraName;
             JPA.em().persist(aura);
-			List<Aura> auras = (List<Aura>) JPA.em().createQuery("select a from Aura a").getResultList();
+			List<Aura> auras = Aura.find.all();
 			return ok(index.render(auras));
         }             
 	}
@@ -43,9 +47,7 @@ public class Application extends Controller {
     public Result auralytics(String auraName) {
         Aura aura;
         try {
-            aura = JPA.em().createQuery("from Aura where name = :auraName", Aura.class)
-						   .setParameter("auraName", auraName)
-						   .getSingleResult();
+            aura = Aura.getAuraByName(auraName);
 			return ok(auralytics.render(aura.name, aura.metrics));
         } catch(Exception e)
         {
@@ -58,12 +60,11 @@ public class Application extends Controller {
     public Result createMetric(String auraName, String name, String plotType) {
 		Aura aura;
 		try{
-        aura = JPA.em().createQuery("from Aura where name = :auraName", Aura.class)
-                .setParameter("auraName", auraName).getSingleResult();
+        aura = Aura.getAuraByName(auraName);
 		}
 		catch(Exception e)
 		{
-			return ok(message.render("ERROR: The Aura '" + auraName + "' doesn't."));
+			return ok(message.render("ERROR: The Aura '" + auraName + "' doesn't exist."));
 		}
 			try{
 			Metric metric = JPA.em().createQuery("from Metric where name = :metricName", Metric.class)
@@ -76,8 +77,9 @@ public class Application extends Controller {
 			metric.name = name;
 			metric.plotType = plotType;
 			metric.aura = aura;
+			metric.save();
 			aura.metrics.add(metric);
-			JPA.em().persist(aura);
+			aura.save();
 		}
 		               
         return redirect(routes.Application.auralytics(auraName));
@@ -88,17 +90,20 @@ public class Application extends Controller {
 		Aura aura;
 		Metric metric;	
 		MetricEntry metricEntry;
+
+		play.mvc.Http.Cookie c = request().cookies().get("name");
+		if(c != null)
+		System.out.println("Cookie test:" + c);
+
         try{
-        aura = JPA.em().createQuery("from Aura where name = :auraName", Aura.class)
-                .setParameter("auraName", auraName).getSingleResult();
+        aura = Aura.getAuraByName(auraName);
 		}
 		catch(Exception e)
 		{
 			return ok(message.render("ERROR: The requested Aura doesn't exist."));
 		}
 		try{
-        metric = JPA.em().createQuery("from Metric where name = :metricName", Metric.class)
-                .setParameter("metricName", metricName).getSingleResult();
+        metric = Aura.getMetricByName(metricName);
 		}
 		catch(Exception e)
 		{
@@ -119,10 +124,11 @@ public class Application extends Controller {
         metricEntry.date = new Date();
 		
 		metricEntry.metric = metric;
+		metricEntry.save();
 		metric.metricEntries.add(metricEntry);
-		//}
-   
-        JPA.em().persist(metricEntry);
+		metric.save();
+
+        response().setCookie("test", "userid");
         return redirect(routes.Application.auralytics(auraName));
     }
 	
