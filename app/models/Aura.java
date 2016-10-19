@@ -3,15 +3,13 @@ package models;
 import javax.persistence.*;
 import com.avaje.ebean.Model;
 import java.util.*;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Created by craveiro on 03-09-2015.
  */
 
 @Entity
-public class Aura  {
+public class Aura extends Model {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

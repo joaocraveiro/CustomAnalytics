@@ -1,15 +1,15 @@
 package models;
 
-import com.avaje.ebean.Model;
 import javax.persistence.*;
-import java.util.Date;
+import com.avaje.ebean.Model;
+import java.util.*;
 
 /**
  * Created by craveiro on 03-09-2015.
  */
 
 @Entity
-public class MetricEntry {
+public class MetricEntry extends Model {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

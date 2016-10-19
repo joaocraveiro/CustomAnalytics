@@ -2,15 +2,14 @@ package models;
 
 import com.avaje.ebean.Model;
 import javax.persistence.*;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by craveiro on 03-09-2015.
  */
 
 @Entity
-public class Metric {
+public class Metric extends Model{
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -31,7 +30,7 @@ public class Metric {
     );
 
     public static Metric getMetricByName(String metricName){
-        Metric metric = Aura.find.where().eq("name", metricName).findUnique();
+        Metric metric = Metric.find.where().eq("name", metricName).findUnique();
         return metric;
     }
 }
