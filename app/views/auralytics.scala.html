@@ -1,6 +1,6 @@
-@(auraName: String, metrics: List[Metric])
+@(auraName: String, metrics: List[Metric], displays: List[MetricDisplay])
 
-@main(auraName) {   
+@main(auraName, false){
 
 <div class="container">
 
@@ -10,11 +10,11 @@
     } else {
 		
 		@for(metric <- metrics){  
-			@if(metric.plotType == "scoreboard"){ 
+			@if(metric == null){ 
 			<div class="stats">							
 				@for(entry <- metric.metricEntries){				
-					<span><div class="name">@entry.name</div> @entry.value</span></br>					
-				}				
+					<span><div class="name">@entry.category</div> @entry.value</span></br>					
+				}
 				</div>
 			} else {
 				<h2>@metric.name</h2>
@@ -31,11 +31,14 @@
     <script>
 
     $(document).ready(function () {
+
+    	console.log(@metrics);
+    	
         
 		@for(metric <- metrics){
 		var metricData = [];
 			@for(metricEntry <- metric.metricEntries){
-				metricData.push({ label: '@metricEntry.name', value: @metricEntry.value });
+				metricData.push({ label: '@metricEntry.category', value: @metricEntry.value });
 			}
 							
 			Morris.Donut({

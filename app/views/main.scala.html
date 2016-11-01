@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, logged: Boolean)(content: Html)
 
 <!DOCTYPE html>
 
@@ -12,7 +12,9 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
     </head>
-    <body>		
+    <body>
+    <h2>Aurasma Custom Analytics</h2>
+    @if(logged) { <a href="/logout">logout</a><br><br> }
         @content
     </body>
 </html>

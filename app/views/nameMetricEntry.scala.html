@@ -1,13 +1,13 @@
 @(auraName: String, metricName: String, value: Integer)
 
-@main(auraName) {   
+@main(auraName, false) {   
 	
 	Insert your name: @* retrieve from local storage*@
 	<input type="text" id="playerName">
 	</br>
 	Score: @value
 	</br>
-	<button onclick="openURL('@routes.Application.createMetricEntry(auraName,metricName,"",value)')">Submit</button>
+	<button onclick="openURL('@routes.Application.createMetricEntry(auraName,metricName,"",""+value,1,"")')">Submit</button>
 		
 	<script>
 	
@@ -20,8 +20,8 @@
 	
 	function openURL(url){		
 		var url = url;
-		url = url.substr(0, url.indexOf("//")) + "/" + document.getElementById("playerName").value + url.substr(url.indexOf("//")+1);
-		localStorage.setItem("lunAR_playerName",JSON.stringify(document.getElementById("playerName").value));		
+		//url = url.substr(0, url.indexOf("//")) + "/" + document.getElementById("playerName").value + url.substr(url.indexOf("//")+1);
+		localStorage.setItem("lunAR_playerName",JSON.stringify(document.getElementById("playerName").value));
 		window.open(url,"_self");
 	}
 	

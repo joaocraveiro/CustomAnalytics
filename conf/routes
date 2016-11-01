@@ -4,12 +4,18 @@
 
 # Home page
 GET         /                                         controllers.Application.index()
-GET         /auralytics/:auraName                     controllers.Application.auralytics(auraName: String)
+GET         /login                                    controllers.Application.login()
+POST        /authenticate                             controllers.Application.authenticate()
+GET         /logout                                   controllers.Application.logout()
+
+GET         /:auraName                                controllers.Application.auralytics(auraName: String)
+GET         /auraAdmin/:auraName                      controllers.Application.auraAdmin(auraName: String)
 
 GET         /newAura/:auraName                        controllers.Application.createAura(auraName: String)
-GET         /newMetric/:aura/:metricName/:plotType    controllers.Application.createMetric(aura: String, metricName: String, plotType: String)
-GET         /register/:aura/:metric/:name/:value      controllers.Application.createMetricEntry(aura: String, metric: String, name: String, value: Integer)
-GET         /register/:aura/:metric/:value            controllers.Application.createUnnamedMetricEntry(aura: String, metric: String, value: Integer)
+GET         /newMetric/:aura/:metricName              controllers.Application.createMetric(aura: String, metricName: String)
+POST        /auraAdmin/createDisplay                  controllers.Application.createDisplay()
+
+GET         /register/:aura/:metric                   controllers.Application.createMetricEntry(aura: String, metric: String, user: String?=null, category: String?=null, value: Integer?=null, mode: String?=null)
 
 
 # Map static resources from the /public folder to the /assets URL path

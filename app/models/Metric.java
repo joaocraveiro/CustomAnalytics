@@ -14,10 +14,13 @@ public class Metric extends Model{
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	public long id;
-
+    
     public String name;
 
-	public String plotType;	
+    public String redirectAddress;
+
+    //public List String categories;
+    //public Boolean forceCategories;
     
     @ManyToOne
     public Aura aura;

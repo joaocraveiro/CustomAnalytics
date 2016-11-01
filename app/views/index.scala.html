@@ -1,15 +1,31 @@
-@(auras: List[Aura])
+@(auras: List[Aura], sa: Boolean)
 
-@main("Aurasma Custom Analytics") {    
+@main("Aurasma Custom Analytics", true) {          
+	
+	@if(auras.isEmpty){
+		No information to display.
+	} else{
+		<br>
+		<ul>
+		    @for(aura <- auras){	
+		        <li><a href="/auraAdmin/@aura.name">@aura.name</a></li>		
+		    }
+		</ul>
+	}
 
-    <br/>
+	@if(sa){
+		<br>
+		<input id="auraname" type="text" />
+		<button onclick="newAura()">New Aura</button>
+	}
 
-    <h2>Aura List:</h2>
-
-	<ul>	
-    @for(aura <- auras){	
-        <li><a href="/auralytics/@aura.name">@aura.name</a></li>		
-    }
-	</ul>
+	<script>
+	function newAura(){
+		var url = "@routes.Application.createAura("")";
+		var auraname = document.getElementById("auraname").value;
+		if(auraname) url += auraname;		
+		window.open(url,"_self");
+	}
+	</script>
 
 }

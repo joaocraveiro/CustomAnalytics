@@ -15,7 +15,7 @@ public class MetricEntry extends Model {
     @GeneratedValue(strategy=GenerationType.AUTO)
 	public long id;
 
-    public String name;
+    public String category;
 
     @Temporal(TemporalType.TIMESTAMP)
     public Date date;
@@ -24,6 +24,9 @@ public class MetricEntry extends Model {
 
     @ManyToOne
     public Metric metric;
+
+    @ManyToOne
+    public Profile profile;
 
     public static Finder<Long,MetricEntry> find = new Finder<Long,MetricEntry>(
         Long.class, MetricEntry.class

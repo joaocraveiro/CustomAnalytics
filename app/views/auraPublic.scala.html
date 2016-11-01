@@ -1,0 +1,22 @@
+@(aura: Aura)
+
+@main("Aurasma Custom Analytics", false) {   
+	
+	Name: @aura.name<br>	
+
+	DISPLAYS<br>
+	@for(metric <- aura.metrics){
+	<br>
+	<br>
+		@metric.name<br>
+		<ul>
+		@for(entry <- metric.metricEntries){ 
+			<li>@entry.profile.id @@ @entry.date: @entry.value (@entry.category)</li>
+		}
+		</ul>
+	}
+
+	<script>
+	</script>
+
+}

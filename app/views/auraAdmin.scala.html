@@ -1,0 +1,76 @@
+@(aura: Aura)
+
+@main("Aurasma Custom Analytics", true) {   
+	
+	Name: @aura.name<br>
+	Admin password: @aura.adminToken<br>
+	
+	<br>
+	Metrics:<br>
+	<ul>
+	@for(metric <- aura.metrics){
+		<li>@metric.name - Entries: @metric.metricEntries.size()</li>
+	}
+	</ul>
+
+	<br>
+	Displays:<br>
+	<ul>
+	@for(display <- aura.displays){
+		<li>@display.name shows metric @display.metric.name (type: @display.plot) </li>
+	}
+	</ul>
+
+	<br>
+		<h3>Actions</h3>
+		Name: <input id="metricname" type="text" /><br>
+		<button onclick="newMetric()">Create Metric</button>
+	<br><br><br>
+		Name: <input id="displayname" type="text" /><br>
+		Metric: <select id="displaymetric">
+		@for(metric <- aura.metrics){ <option value="@metric.name">@metric.name</option> }  
+		</select><br>
+		Plot: <select id="plot">
+			<option value="text">Text</option>
+			<option value="donut">Donut</option>
+			<option value="bars">Bars</option>
+			<option value="line">Line</option>
+			</select><br>
+		Category: <input id="displaycategory" type="checkbox" /><br>
+		User: <input id="displayuser" type="checkbox" /><br>
+		<button onclick="newDisplay()">Create Display</button>
+	<br>		
+
+
+	<script>
+	function newMetric(){		
+		var metricname = document.getElementById("metricname").value;
+		if(metricname){
+			var url = "@routes.Application.createMetric(aura.name,"")";		
+			if(metricname) url += metricname;
+			window.open(url,"_self");
+		}
+	}
+
+	function newDisplay(){
+		var data = {
+			auraName: "@aura.name",
+			displayName: document.getElementById("displayname").value,
+			metric: document.getElementById("displaymetric").value,
+			plot: document.getElementById("plot").value,
+			category: document.getElementById("displaycategory").value,
+			user:document.getElementById("displayuser").value
+		};
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "/auraAdmin/createDisplay");
+		xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+  		xhr.send(JSON.stringify(data));
+
+		xhr.onloadend = function () {
+    		var statusCode = xhr.status;
+   			if(statusCode == 200) window.location.href = '/auraAdmin/' + "@aura.name";
+  		};
+	}
+	</script>
+
+}
