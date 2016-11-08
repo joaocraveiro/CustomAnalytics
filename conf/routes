@@ -12,7 +12,7 @@ GET         /:auraName                                controllers.Application.au
 GET         /auraAdmin/:auraName                      controllers.Application.auraAdmin(auraName: String)
 
 GET         /newAura/:auraName                        controllers.Application.createAura(auraName: String)
-GET         /newMetric/:aura/:metricName              controllers.Application.createMetric(aura: String, metricName: String)
+POST        /auraAdmin/newMetric                      controllers.Application.createMetric()
 POST        /auraAdmin/createDisplay                  controllers.Application.createDisplay()
 
 GET         /register/:aura/:metric                   controllers.Application.createMetricEntry(aura: String, metric: String, user: String?=null, category: String?=null, value: Integer?=null, mode: String?=null)

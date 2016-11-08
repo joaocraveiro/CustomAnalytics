@@ -25,6 +25,7 @@ public class Application extends Controller {
     @Security.Authenticated(AdminAuthenticator.class)
     public Result index() {
     	String login = session().get("aura");
+        if(login == null) return login();
     	if(login.equals("superadmin")) return ok(index.render(Aura.find.all(),true));
     	else{    		
     		return ok(index.render(Aura.find.where().eq("id", Long.parseLong(login)).findList(),false));
@@ -90,17 +91,27 @@ public class Application extends Controller {
         if(aura == null){    
         	System.out.println("Aura " + auraName + " doesn't exist");
             return index();
+        }    
+        String login = session().get("aura");
+        if(login == null){
+            play.mvc.Http.Cookie c = request().cookies().get("aurasma-customanalytics");    
+            if(c != null)
+                return ok(auraPublic.render(aura,c.value()));
+            else
+                return index();
         }
-        else{
-        	//play.mvc.Http.Cookie c = request().cookies().get("test");
-			//if(c != null) System.out.println("Cookie test:" + c.value());			
-        	return ok(auraPublic.render(aura));
-        }
+        else if(login.equals("superadmin") || Aura.getAuraById(login).name.equals(auraName))
+            return ok(auraPublic.render(aura,null));
+            else return index();
     }
-    
+
     @Security.Authenticated(AdminAuthenticator.class)
-    public Result createMetric(String auraName, String name) {
-		Aura aura = Aura.getAuraByName(auraName);
+    public Result createMetric() {
+        JsonNode json = request().body().asJson();
+        String auraName = json.get("auraName").asText();
+        String name = json.get("metricname").asText();
+		String redirect = json.get("metricredirect").asText();
+        Aura aura = Aura.getAuraByName(auraName);
 		if(aura == null){
 			System.out.println("Aura " + auraName + " doesn't exist");
 			return index();
@@ -114,6 +125,7 @@ public class Application extends Controller {
 			metric = new Metric();
 			metric.name = name;
 			metric.aura = aura;
+            if(!redirect.isEmpty()) metric.redirectAddress = redirect;
 			metric.save();
 			aura.metrics.add(metric);
 			aura.save();
@@ -136,15 +148,17 @@ public class Application extends Controller {
 		String metricName = json.get("metric").asText();
 		if(metricName == null) return badRequest(); // THIS IS NOT AVOIDING EMPTY METRICS
 		String plot = json.get("plot").asText();
+        String timeFrame = json.get("timeFrame").asText();
 		Boolean category = json.get("category").asBoolean();
 		Boolean user = json.get("user").asBoolean();
 		MetricDisplay display = new MetricDisplay();
 		display.name = displayName;
 		display.plot = plot;
 		display.metric = Metric.getMetricByName(metricName);
-		display.category = category;
+		display.category = category;        
 		display.user = user;
 		display.aura = aura;
+        display.timeFrame = timeFrame;            
 		display.save();
 		return ok();
     }
@@ -196,7 +210,10 @@ public class Application extends Controller {
 		metric.save();
 		System.out.println("Metric entry for" + category + " created and assigned to user " + metricEntry.profile.id);
         
-        return ok(auraPublic.render(Aura.getAuraById(aura.id)));
+        if(metric.redirectAddress == null)
+            return auralytics(aura.name);
+        else
+            return ok(message.render(metric.redirectAddress));
     }
 
 }

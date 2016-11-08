@@ -29,6 +29,7 @@ create table metric_display (
   category                      boolean,
   user                          boolean,
   plot                          varchar(255),
+  time_frame                    varchar(255),
   constraint pk_metric_display primary key (id)
 );
 create sequence metric_display_seq;

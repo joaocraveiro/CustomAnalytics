@@ -4,6 +4,10 @@
 	
 	Name: @aura.name<br>
 	Admin password: @aura.adminToken<br>
+
+	<br>
+	<button onclick="openPublicPage()">Open public page</button>
+	<br>
 	
 	<br>
 	Metrics:<br>
@@ -17,13 +21,14 @@
 	Displays:<br>
 	<ul>
 	@for(display <- aura.displays){
-		<li>@display.name shows metric @display.metric.name (type: @display.plot) </li>
+		<li>@display.name shows metric @display.metric.name (type: @display.plot) User grouping: @display.user </li>
 	}
 	</ul>
 
 	<br>
 		<h3>Actions</h3>
 		Name: <input id="metricname" type="text" /><br>
+		Redirect: <input id="metricredirect" type="text" /><br>
 		<button onclick="newMetric()">Create Metric</button>
 	<br><br><br>
 		Name: <input id="displayname" type="text" /><br>
@@ -36,19 +41,50 @@
 			<option value="bars">Bars</option>
 			<option value="line">Line</option>
 			</select><br>
-		Category: <input id="displaycategory" type="checkbox" /><br>
-		User: <input id="displayuser" type="checkbox" /><br>
+			Grouping:
+		Category <input id="displaycategory" type="checkbox" /> &nbsp;&nbsp;
+		User <input id="displayuser" type="checkbox" />
+		Time <input id="displaytime" type="checkbox" onchange="timeChange()"/><br>
+		<div id="timeFrameDiv" style="display:none">
+		Time interval: <select id="timeFrame">
+			<option value="text">Hourly</option>
+			<option value="donut">Daily</option>
+			<option value="bars">Weekly</option>
+			<option value="line">Monthly</option>
+			<option value="line">Yearly</option>
+			</select><br>
+		</div>
 		<button onclick="newDisplay()">Create Display</button>
 	<br>		
 
 
 	<script>
-	function newMetric(){		
-		var metricname = document.getElementById("metricname").value;
-		if(metricname){
-			var url = "@routes.Application.createMetric(aura.name,"")";		
-			if(metricname) url += metricname;
-			window.open(url,"_self");
+	function timeChange(){
+		console.log(document.getElementById("displayuser").value);
+		if(document.getElementById("displaytime").checked){			
+			document.getElementById("timeFrameDiv").style.display = "block";
+		}else{
+			document.getElementById("timeFrameDiv").style.display = "none";
+		}
+	}
+
+	function newMetric(){
+		var data = {
+			auraName: "@aura.name",
+			metricname: document.getElementById("metricname").value,
+		}	
+		if(document.getElementById("metricredirect").value) data["metricredirect"] = document.getElementById("metricredirect").value;
+		else data["metricredirect"] = "";
+		if(document.getElementById("metricname").value){
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "/auraAdmin/newMetric");
+			xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	  		xhr.send(JSON.stringify(data));
+
+			xhr.onloadend = function () {
+	    		var statusCode = xhr.status;
+	   			if(statusCode == 200) window.location.href = '/auraAdmin/' + "@aura.name";
+	  		};
 		}
 	}
 
@@ -58,8 +94,9 @@
 			displayName: document.getElementById("displayname").value,
 			metric: document.getElementById("displaymetric").value,
 			plot: document.getElementById("plot").value,
-			category: document.getElementById("displaycategory").value,
-			user:document.getElementById("displayuser").value
+			category: document.getElementById("displaycategory").checked,
+			user: document.getElementById("displayuser").checked,
+			timeFrame:document.getElementById("timeFrame").value
 		};
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", "/auraAdmin/createDisplay");
@@ -70,6 +107,10 @@
     		var statusCode = xhr.status;
    			if(statusCode == 200) window.location.href = '/auraAdmin/' + "@aura.name";
   		};
+	}
+
+	function openPublicPage(){
+		window.open("/@aura.name","_blank");
 	}
 	</script>
 
