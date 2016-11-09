@@ -4,7 +4,7 @@
 # --- !Ups
 
 create table aura (
-  id                            bigint not null,
+  id                            bigserial not null,
   name                          varchar(255),
   admin_token                   varchar(255),
   user_token                    varchar(255),
@@ -13,7 +13,7 @@ create table aura (
 create sequence aura_seq;
 
 create table metric (
-  id                            bigint not null,
+  id                            bigserial not null,
   name                          varchar(255),
   redirect_address              varchar(255),
   aura_id                       bigint,
@@ -22,7 +22,7 @@ create table metric (
 create sequence metric_seq;
 
 create table metric_display (
-  id                            bigint not null,
+  id                            bigserial not null,
   name                          varchar(255),
   aura_id                       bigint,
   metric_id                     bigint,
@@ -35,7 +35,7 @@ create table metric_display (
 create sequence metric_display_seq;
 
 create table metric_entry (
-  id                            bigint not null,
+  id                            bigserial not null,
   category                      varchar(255),
   date                          timestamp,
   value                         integer,
@@ -46,7 +46,7 @@ create table metric_entry (
 create sequence metric_entry_seq;
 
 create table profile (
-  id                            bigint not null,
+  id                            bigserial not null,
   name                          varchar(255),
   register_date                 timestamp,
   constraint pk_profile primary key (id)

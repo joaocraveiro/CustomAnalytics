@@ -7,14 +7,11 @@ import java.util.*;
 import java.security.SecureRandom;
 import java.math.BigInteger;
 
-import com.fasterxml.jackson.annotation.*;
-
 /**
  * Created by craveiro on 03-09-2015.
  */
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="id")
 public class Aura extends Model {
 
     @Id
