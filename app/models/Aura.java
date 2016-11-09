@@ -34,6 +34,21 @@ public class Aura extends Model {
         Long.class, Aura.class
     );
 
+    public Metric getMetricByName(String metricName){
+        Metric m = Metric.find.where().eq("name",metricName).eq("aura",this).findUnique();        
+        return m;
+    }
+
+    public Metric getMetricById(Long id){
+        Metric m = Metric.find.where().eq("id",id).eq("aura",this).findUnique();        
+        return m;
+    }
+
+    public MetricDisplay getDisplayById(Long id){
+        MetricDisplay m = MetricDisplay.find.where().eq("id",id).eq("aura",this).findUnique();        
+        return m;
+    }
+
     public static Aura getAuraById(Long id){
         Aura aura = Aura.find.where().eq("id", id).findUnique();
         return aura;

@@ -116,7 +116,7 @@ public class Application extends Controller {
 			System.out.println("Aura " + auraName + " doesn't exist");
 			return index();
 		}
-		Metric metric = Metric.getMetricByName(name);
+		Metric metric = aura.getMetricByName(name);
 		if(metric != null){
 			System.out.println("Metric " + name + " already exists");
 			return auraAdmin(aura.name);
@@ -154,7 +154,7 @@ public class Application extends Controller {
 		MetricDisplay display = new MetricDisplay();
 		display.name = displayName;
 		display.plot = plot;
-		display.metric = Metric.getMetricByName(metricName);
+		display.metric = aura.getMetricByName(metricName);
 		display.groupCategory = category;        
 		display.groupUser = user;
 		display.aura = aura;
@@ -173,7 +173,7 @@ public class Application extends Controller {
 			return ok(message.render("Aura doesn't exist"));
 		} 
 
-		Metric metric = Metric.getMetricByName(metricName);
+		Metric metric = aura.getMetricByName(metricName);
 		if(metric == null){
 			System.out.println("Metric " + metricName + " doesn't exist.");
 			return ok(message.render("Metric doesn't exist"));
@@ -208,12 +208,49 @@ public class Application extends Controller {
 
 		metric.metricEntries.add(metricEntry);
 		metric.save();
-		System.out.println("Metric entry for" + category + " created and assigned to user " + metricEntry.profile.id);
+		System.out.println("Metric entry for category " + category + " with value " + value + " created and assigned to user " + metricEntry.profile.id);
         
         if(metric.redirectAddress == null)
             return auralytics(aura.name);
         else
             return ok(message.render(metric.redirectAddress));
+    }
+
+    public Result deleteMetric(String auraName, Long metricId){
+        Aura aura = Aura.getAuraByName(auraName);
+        if(aura == null){
+            System.out.println("Aura " + auraName + " doesn't exist.");
+            return ok(message.render("Aura doesn't exist"));
+        } 
+
+        Metric metric = aura.getMetricById(metricId);
+        if(metric == null){
+            System.out.println("Metric " + metricId + " doesn't exist.");
+            return ok(message.render("Metric doesn't exist"));
+        }
+
+        for(MetricDisplay display : MetricDisplay.getDisplaysByMetric(metricId)){
+            display.delete();
+        }
+
+        metric.delete();
+        return auraAdmin(aura.name);
+    }
+
+    public Result deleteDisplay(String auraName, Long displayId){
+        Aura aura = Aura.getAuraByName(auraName);
+        if(aura == null){
+            System.out.println("Aura " + auraName + " doesn't exist.");
+            return ok(message.render("Aura doesn't exist"));
+        } 
+
+        MetricDisplay display = aura.getDisplayById(displayId);
+        if(display == null){
+            System.out.println("Display " + displayId + " doesn't exist.");
+            return ok(message.render("Display doesn't exist"));
+        }
+        display.delete();
+        return auraAdmin(aura.name);
     }
 
 }

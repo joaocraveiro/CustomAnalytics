@@ -3,19 +3,21 @@
 # ~~~~
 
 # Home page
-GET         /                                         controllers.Application.index()
-GET         /login                                    controllers.Application.login()
-POST        /authenticate                             controllers.Application.authenticate()
-GET         /logout                                   controllers.Application.logout()
+GET         /                                               controllers.Application.index()
+GET         /login                                          controllers.Application.login()
+POST        /authenticate                                   controllers.Application.authenticate()
+GET         /logout                                         controllers.Application.logout()
 
-GET         /:auraName                                controllers.Application.auralytics(auraName: String)
-GET         /auraAdmin/:auraName                      controllers.Application.auraAdmin(auraName: String)
+GET         /:auraName                                      controllers.Application.auralytics(auraName: String)
+GET         /auraAdmin/:auraName                            controllers.Application.auraAdmin(auraName: String)
 
-GET         /newAura/:auraName                        controllers.Application.createAura(auraName: String)
-POST        /auraAdmin/newMetric                      controllers.Application.createMetric()
-POST        /auraAdmin/createDisplay                  controllers.Application.createDisplay()
+GET         /newAura/:auraName                              controllers.Application.createAura(auraName: String)
+POST        /auraAdmin/newMetric                            controllers.Application.createMetric()
+POST        /auraAdmin/createDisplay                        controllers.Application.createDisplay()
+GET			/auraAdmin/:auraName/deleteMetric/:metricId     controllers.Application.deleteMetric(auraName: String, metricId: Long)
+GET			/auraAdmin/:auraName/deleteDisplay/:displayId   controllers.Application.deleteDisplay(auraName: String, displayId: Long)
 
-GET         /register/:aura/:metric                   controllers.Application.createMetricEntry(aura: String, metric: String, user: String?=null, category: String?=null, value: Integer?=null, mode: String?=null)
+GET         /register/:aura/:metric                         controllers.Application.createMetricEntry(aura: String, metric: String, user: String?=null, category: String?=null, value: Integer?=null, mode: String?=null)
 
 
 # Map static resources from the /public folder to the /assets URL path

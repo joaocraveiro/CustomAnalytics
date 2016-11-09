@@ -13,7 +13,7 @@
 	Metrics:<br>
 	<ul>
 	@for(metric <- aura.metrics){
-		<li>@metric.name - Entries: @metric.metricEntries.size()</li>
+		<li>@metric.name - Entries: @metric.metricEntries.size() <a href="@aura.name/deleteMetric/@metric.id">delete</a></li>
 	}
 	</ul>
 
@@ -21,7 +21,7 @@
 	Displays:<br>
 	<ul>
 	@for(display <- aura.displays){
-		<li>@display.name shows metric @display.metric.name (type: @display.plot) User grouping: @display.groupUser </li>
+		<li>@display.name shows metric @display.metric.name (type: @display.plot) User grouping: @display.groupUser <a href="@aura.name/deleteDisplay/@display.id">delete</a></li>
 	}
 	</ul>
 

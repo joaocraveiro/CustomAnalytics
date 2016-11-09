@@ -46,6 +46,19 @@ public class MetricDisplay extends Model {
         return data;
     }
 
+    public HashMap<String,Integer> categoryGrouped(){
+        HashMap<String,Integer> data = new HashMap<String,Integer>();
+        for(MetricEntry entry : metric.metricEntries){
+            String key = "\"" + entry.category + "\"";
+            if(data.containsKey(key)){
+                data.put(key, data.get(key) + entry.value);
+            } else{
+                data.put(key, entry.value);    
+            }                    
+        }
+        return data;
+    }
+
      public HashMap<String,Integer> userCategoryGrouped(String profileId){
         HashMap<String,Integer> data = new HashMap<String,Integer>();
         for(MetricEntry entry : metric.metricEntries){
@@ -59,6 +72,11 @@ public class MetricDisplay extends Model {
             }
         }
         return data;
+    }
+
+    public static List<MetricDisplay> getDisplaysByMetric(Long id){
+        List<MetricDisplay> displays = MetricDisplay.find.where().eq("metric.id",id).findList();        
+        return displays;
     }
 
     public static Finder<Long,MetricDisplay> find = new Finder<Long,MetricDisplay>(

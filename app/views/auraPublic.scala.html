@@ -26,13 +26,21 @@
 					for(key in data) document.getElementById("@display.name").innerHTML += key +": " + data[key]+"<br>";
 				}
 				@if(display.groupUser && !display.groupCategory){					
-					var data = JSON.parse("@display.userGrouped()".replace(/&quot;/g, '\"').replace(/=/g, ':'));					
+					var data = JSON.parse("@display.userGrouped()".replace(/&quot;/g, '\"').replace(/=/g, ':'));
+					console.log(data);
+					for(key in data) document.getElementById("@display.name").innerHTML += key +": " + data[key]+"<br>";
+				}
+				@if(!display.groupUser && display.groupCategory){					
+					var data = JSON.parse("@display.categoryGrouped()".replace(/&quot;/g, '\"').replace(/=/g, ':'));
+					console.log(data);
 					for(key in data) document.getElementById("@display.name").innerHTML += key +": " + data[key]+"<br>";
 				}
 			}
-			@if(display.plot.equals("donut")){					
+			@if(display.plot.equals("donut")){
+				var data = JSON.parse("@display.categoryGrouped()".replace(/&quot;/g, '\"').replace(/=/g, ':'));
 				var plotdata = [];
-				for(key in data) plotdata.push({label:key,value:data[key]});				
+				for(key in data) plotdata.push({label:key,value:data[key]});
+				console.log(plotdata);
 				Morris.Donut({element:"@display.name",data:plotdata})
 			}
 		}
