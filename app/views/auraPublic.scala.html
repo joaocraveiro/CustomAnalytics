@@ -20,12 +20,12 @@
 		@for(display <- aura.displays){
 			var data = JSON.parse("@display.userGrouped()".replace(/&quot;/g, '\"').replace(/=/g, ':'));			
 			@if(display.plot.equals("text")){
-				@if(display.user && display.category){
+				@if(display.groupUser && display.groupCategory){
 					@if(profileId == null){ var data = JSON.parse("@display.userCategoryGrouped(null)".replace(/&quot;/g, '\"').replace(/=/g, ':')); 
 					}else{ var data = JSON.parse("@display.userCategoryGrouped(profileId)".replace(/&quot;/g, '\"').replace(/=/g, ':')); }
 					for(key in data) document.getElementById("@display.name").innerHTML += key +": " + data[key]+"<br>";
 				}
-				@if(display.user && !display.category){					
+				@if(display.groupUser && !display.groupCategory){					
 					var data = JSON.parse("@display.userGrouped()".replace(/&quot;/g, '\"').replace(/=/g, ':'));					
 					for(key in data) document.getElementById("@display.name").innerHTML += key +": " + data[key]+"<br>";
 				}

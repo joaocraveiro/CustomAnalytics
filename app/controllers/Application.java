@@ -155,10 +155,10 @@ public class Application extends Controller {
 		display.name = displayName;
 		display.plot = plot;
 		display.metric = Metric.getMetricByName(metricName);
-		display.category = category;        
-		display.user = user;
+		display.groupCategory = category;        
+		display.groupUser = user;
 		display.aura = aura;
-        display.timeFrame = timeFrame;            
+        display.timeFrame = timeFrame;
 		display.save();
 		return ok();
     }

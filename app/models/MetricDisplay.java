@@ -27,8 +27,8 @@ public class MetricDisplay extends Model {
     @ManyToOne
     public Metric metric;
 
-    public Boolean category;
-    public Boolean user;
+    public Boolean groupCategory;
+    public Boolean groupUser;
 
     public String plot;
     public String timeFrame;

@@ -26,8 +26,8 @@ create table metric_display (
   name                          varchar(255),
   aura_id                       bigint,
   metric_id                     bigint,
-  category                      boolean,
-  user                          boolean,
+  group_category                boolean,
+  group_user                    boolean,
   plot                          varchar(255),
   time_frame                    varchar(255),
   constraint pk_metric_display primary key (id)
