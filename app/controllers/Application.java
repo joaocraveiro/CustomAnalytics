@@ -218,6 +218,64 @@ public class Application extends Controller {
             return ok(message.render(metric.redirectAddress));
     }
 
+    public Result createMultiMetricEntries(String auraName, String metrics, String categories) {
+
+        // validate public code
+        String[] metricsArray = metrics.split(",");
+        String[] categoriesArray = categories.split(",");
+
+        Aura aura = Aura.getAuraByName(auraName);
+        if(aura == null){
+            System.out.println("Aura " + auraName + " doesn't exist.");
+            return ok(message.render("Aura doesn't exist"));
+        }
+
+        // User: if provided assign
+        Profile profile = null;
+        play.mvc.Http.Cookie c = request().cookies().get("aurasma-customanalytics");
+        if(c != null) profile = Profile.getProfileById(c.value());
+        if(profile == null){
+            profile = new Profile();
+            profile.registerDate = new Date();          
+            profile.save();
+            profile = profile;          
+            response().setCookie("aurasma-customanalytics", ""+profile.id, 86400);
+        }
+
+        for(int i=0; i < metricsArray.length; i++){
+
+            Metric metric = aura.getMetricByName(metricsArray[i]);
+            if(metric == null){
+                System.out.println("Metric " + metricsArray[i] + " doesn't exist.");
+                return ok(message.render("Metric doesn't exist"));
+            }
+
+            // validate if all metrics exist and if they are the same size as the values/categories!!
+        
+            MetricEntry metricEntry = new MetricEntry();
+            
+            metricEntry.profile = profile;
+            
+            // Category: can be null
+            metricEntry.category = categoriesArray[i];
+
+            metricEntry.value = 1;
+
+            metricEntry.date = new Date();
+            metricEntry.metric = metric;
+            metricEntry.save();
+
+            metric.metricEntries.add(metricEntry);
+            metric.save();
+            System.out.println("Metric entry for category " + categoriesArray[i] + " with value " + metricEntry.value + " created and assigned to user " + metricEntry.profile.id);
+        }
+        
+        /*if(metric.redirectAddress == null)
+            return auralytics(aura.name);
+        else*/
+        return ok(message.render("Registration complete"));
+    }
+
     public Result deleteMetric(String auraName, Long metricId){
         Aura aura = Aura.getAuraByName(auraName);
         if(aura == null){

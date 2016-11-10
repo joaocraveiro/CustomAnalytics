@@ -20,7 +20,6 @@
   		xhr.send(JSON.stringify(data));
 
 		xhr.onloadend = function () {
-			console.log(xhr.status);
     		var statusCode = xhr.status;
    			if(statusCode == 200) window.location.reload();
   		};

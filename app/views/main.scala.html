@@ -17,8 +17,9 @@
     <body>
     <div class="title">
     <h2>Aurasma Custom Analytics</h2>
+    @if(logged) { <a class="btn btn-info" href="/logout">logout</a><br><br> }
     </div>
-    @if(logged) { <a href="/logout">logout</a><br><br> }
+    
         @content
     </body>
 </html>

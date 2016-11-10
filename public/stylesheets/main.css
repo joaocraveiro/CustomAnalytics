@@ -60,7 +60,7 @@ spanp:nth-child(9) {
 
 .frame{
 	width: 100%;
-	height: 100%;	
+	height: 100%;
 }
 
 .moon{
@@ -88,8 +88,6 @@ width: 100%;
 width: 200px;
 display: inline-block;
 }
-
-
 
 .form-signin {
   max-width: 330px;

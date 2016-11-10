@@ -17,6 +17,9 @@ POST        /auraAdmin/createDisplay                        controllers.Applicat
 GET			/auraAdmin/:auraName/deleteMetric/:metricId     controllers.Application.deleteMetric(auraName: String, metricId: Long)
 GET			/auraAdmin/:auraName/deleteDisplay/:displayId   controllers.Application.deleteDisplay(auraName: String, displayId: Long)
 
+
+GET         /registerMultiMetric/:aura                      controllers.Application.createMultiMetricEntries(aura: String, metrics: String?=null, categories: String?=null)
+
 GET         /register/:aura/:metric                         controllers.Application.createMetricEntry(aura: String, metric: String, user: String?=null, category: String?=null, value: Integer?=null, mode: String?=null)
 
 
