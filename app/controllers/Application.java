@@ -33,12 +33,14 @@ public class Application extends Controller {
     }
     
     public Result login(){
-        return ok(login.render());
+        String ses = session().get("aura");
+        if(ses == null) return ok(login.render());
+        else return redirect("../");
     }
 
     public Result logout(){
     	session().clear();
-    	return ok(login.render());
+    	return redirect("/login");
     }
 
     public Result authenticate(){

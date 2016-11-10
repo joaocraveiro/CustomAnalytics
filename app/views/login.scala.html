@@ -1,11 +1,15 @@
 @main("Aurasma Custom Analytics", false) {    
 		
-	<br>
-	Aura: <input id="aura" type="text" /><br>
-	Password: <input id="code" type="password" />
-	<button onclick="newaura()">Login</button>
+	<br>	
+	<form class="form-signin">
+		<input id="aura" class="form-control" type="text" placeholder="Aura Name"/>
+		<input id="code" class="form-control" type="password" placeholder="Password" />
+		<button class="btn btn-lg btn-primary btn-block" onclick="newaura()">Login</button>
+		</form>
 
 	<script>
+
+	document.body.style.backgroundColor = "#d3d3d3";
 	function newaura(){
 		var aura = document.getElementById("aura").value;
 		var code = document.getElementById("code").value;
@@ -16,8 +20,9 @@
   		xhr.send(JSON.stringify(data));
 
 		xhr.onloadend = function () {
+			console.log(xhr.status);
     		var statusCode = xhr.status;
-   			if(statusCode == 200) window.location.href = '../';
+   			if(statusCode == 200) window.location.reload();
   		};
   	}
 	</script>
