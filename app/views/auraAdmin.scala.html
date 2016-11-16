@@ -21,7 +21,20 @@
 	Displays:<br>
 	<ul>
 	@for(display <- aura.displays){
-		<li>@display.name shows metric @display.metric.name (type: @display.plot) User grouping: @display.groupUser <a href="@aura.name/deleteDisplay/@display.id">delete</a></li>
+		<li>
+			@display.name shows metric @display.metric.name (type: @display.plot) Groupings:(
+			@if(display.groupUser){
+				U
+			}
+			@if(display.groupCategory){
+				C
+			}
+			@if(!display.timeFrame.isEmpty()){
+				T
+			}
+			)
+			<a href="@aura.name/deleteDisplay/@display.id">delete</a>
+		</li>
 	}
 	</ul>
 
