@@ -63,9 +63,11 @@ public class MetricDisplay extends Model {
         }
 
         if(!groupCategory && !groupUser && timeFrame.isEmpty()){
+            int sum = 0;
             for(MetricEntry entry : metric.metricEntries){
-                data.put("\"User" + entry.profile.id + " @ " + entry.date.toString() + " [" + entry.category + "] \"", entry.value);
+                sum += entry.value;
             }
+            data.put("\"Value\"",sum);
         }
 
         else {
