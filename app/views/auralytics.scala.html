@@ -11,7 +11,7 @@
 		
 		@for(metric <- metrics){  
 			@if(metric == null){ 
-			<div class="stats">							
+			<div class="stats">
 				@for(entry <- metric.metricEntries){				
 					<span><div class="name">@entry.category</div> @entry.value</span></br>					
 				}

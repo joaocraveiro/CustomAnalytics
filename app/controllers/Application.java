@@ -22,20 +22,13 @@ public class Application extends Controller {
      * Renders the index view that lists all the registered auras.<br>
      * @return 200 OK
      */
-    @Security.Authenticated(AdminAuthenticator.class)
     public Result index() {
-    	String login = session().get("aura");
-        if(login == null) return login();
-    	if(login.equals("superadmin")) return ok(index.render(Aura.find.all(),true));
-    	else{    		
-    		return ok(index.render(Aura.find.where().eq("id", Long.parseLong(login)).findList(),false));
-    	}
-    }
-    
-    public Result login(){
-        String ses = session().get("aura");
+    	String ses = session().get("aura");
         if(ses == null) return ok(login.render());
-        else return redirect("../");
+    	if(ses.equals("superadmin")) return ok(index.render(Aura.find.all(),true));
+    	else{    		
+    		return ok(index.render(Aura.find.where().eq("id", Long.parseLong(ses)).findList(),false));
+    	}
     }
 
     public Result logout(){
@@ -52,8 +45,6 @@ public class Application extends Controller {
         	session("aura", "superadmin");
         	return ok();
     	} else {
-    		System.out.println(code);
-    		System.out.println(auraName);
     		Aura aura = Aura.getAuraByName(auraName.trim());
     		if(aura == null) return badRequest();
     		if(!aura.adminToken.equals(code)) return unauthorized();
@@ -294,7 +285,7 @@ public class Application extends Controller {
         }
 
         metric.delete();
-        return auraAdmin(aura.name);
+        return redirect("/auraAdmin/" + aura.name);
     }
 
     public Result deleteDisplay(String auraName, Long displayId){
@@ -310,7 +301,7 @@ public class Application extends Controller {
             return ok(message.render("Display doesn't exist"));
         }
         display.delete();
-        return auraAdmin(aura.name);
+        return redirect("/auraAdmin/" + aura.name);
     }
 
 }

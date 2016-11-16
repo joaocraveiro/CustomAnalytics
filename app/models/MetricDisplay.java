@@ -2,6 +2,8 @@ package models;
 
 import javax.persistence.*;
 import com.avaje.ebean.Model;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import java.security.SecureRandom;
@@ -33,41 +35,57 @@ public class MetricDisplay extends Model {
     public String plot;
     public String timeFrame;
 
-    public HashMap<String,Integer> userGrouped(){
+    public HashMap getData(String profileId){
         HashMap<String,Integer> data = new HashMap<String,Integer>();
-        for(MetricEntry entry : metric.metricEntries){
-            String key = "\"" + entry.profile.id + "\"";
-            if(data.containsKey(key)){
-                data.put(key, data.get(key) + entry.value);
-            } else{
-                data.put(key, entry.value);    
-            }                    
+        SimpleDateFormat formatter = null;
+        if(!timeFrame.isEmpty()) {
+            switch (timeFrame) {
+                case "Minute":
+                    formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    break;
+                case "Hourly":
+                    formatter = new SimpleDateFormat("yyyy-MM-dd HH:00");
+                    break;
+                case "Weekly":
+                    formatter = new SimpleDateFormat("yyyy 'W'w");
+                    break;
+                case "Monthly":
+                    formatter = new SimpleDateFormat("yyyy-MM");
+                    break;
+                case "Yearly":
+                    formatter = new SimpleDateFormat("yyyy");
+                    break;
+                case "Daily":
+                default:
+                    formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    break;
+            }
         }
-        return data;
-    }
 
-    public HashMap<String,Integer> categoryGrouped(){
-        HashMap<String,Integer> data = new HashMap<String,Integer>();
-        for(MetricEntry entry : metric.metricEntries){
-            String key = "\"" + entry.category + "\"";
-            if(data.containsKey(key)){
-                data.put(key, data.get(key) + entry.value);
-            } else{
-                data.put(key, entry.value);    
-            }                    
+        if(!groupCategory && !groupUser && timeFrame.isEmpty()){
+            for(MetricEntry entry : metric.metricEntries){
+                data.put("\"User" + entry.profile.id + " @ " + entry.date.toString() + " [" + entry.category + "] \"", entry.value);
+            }
         }
-        return data;
-    }
 
-     public HashMap<String,Integer> userCategoryGrouped(String profileId){
-        HashMap<String,Integer> data = new HashMap<String,Integer>();
-        for(MetricEntry entry : metric.metricEntries){
-            if(profileId == null || (profileId != null && entry.profile.id == Long.parseLong(profileId))){
-                String key = "\"" + entry.profile.id + " " + entry.category + "\"";
-                if(data.containsKey(key)){                
-                    data.put(key, data.get(key) + entry.value);
-                } else {
-                    data.put(key, entry.value);    
+        else {
+            // EVENTUALLY WE SHOULD HAVE A CACHE FOR THIS :) OR DO WITH WITH A SPECIFIC FRAMEWORK FOR THE PURPOSE
+            for (MetricEntry entry : metric.metricEntries) {
+                if (profileId == null || profileId.equals(entry.profile.id)) {
+                    String key = "\"";
+                    if (groupCategory) {
+                        if (entry.category == null) key += "Not specified" + " ";
+                        else key += entry.category + " ";
+                    }
+                    if (groupUser) key += entry.profile.id + " ";
+                    if (!timeFrame.isEmpty()) key += formatter.format(entry.date) + " ";
+                    key = key.trim();
+                    key += "\"";
+                    if (data.containsKey(key)) {
+                        data.put(key, data.get(key) + entry.value);
+                    } else {
+                        data.put(key, entry.value);
+                    }
                 }
             }
         }
@@ -75,8 +93,7 @@ public class MetricDisplay extends Model {
     }
 
     public static List<MetricDisplay> getDisplaysByMetric(Long id){
-        List<MetricDisplay> displays = MetricDisplay.find.where().eq("metric.id",id).findList();        
-        return displays;
+        return MetricDisplay.find.where().eq("metric.id",id).findList();
     }
 
     public static Finder<Long,MetricDisplay> find = new Finder<Long,MetricDisplay>(
@@ -84,7 +101,6 @@ public class MetricDisplay extends Model {
     );
 
     public static MetricDisplay getMetricDisplayById(String id){
-        MetricDisplay metricDisplay = MetricDisplay.find.where().eq("id", Long.parseLong(id)).findUnique();
-        return metricDisplay;
+        return MetricDisplay.find.where().eq("id", Long.parseLong(id)).findUnique();
     }
 }

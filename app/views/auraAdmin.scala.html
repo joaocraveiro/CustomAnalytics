@@ -47,15 +47,17 @@
 		Time <input id="displaytime" type="checkbox" onchange="timeChange()"/><br>
 		<div id="timeFrameDiv" style="display:none">
 		Time interval: <select id="timeFrame">
-			<option value="text">Hourly</option>
-			<option value="donut">Daily</option>
-			<option value="bars">Weekly</option>
-			<option value="line">Monthly</option>
-			<option value="line">Yearly</option>
+			<option value="Minute">Minute</option>
+			<option value="Hourly">Hourly</option>
+			<option value="Daily">Daily</option>
+			<option value="Weekly">Weekly</option>
+			<option value="Monthly">Monthly</option>
+			<option value="Yearly">Yearly</option>
 			</select><br>
 		</div>
 		<button onclick="newDisplay()">Create Display</button>
-	<br>		
+	<br>
+    <br>
 
 
 	<script>
@@ -71,8 +73,8 @@
 	function newMetric(){
 		var data = {
 			auraName: "@aura.name",
-			metricname: document.getElementById("metricname").value,
-		}	
+			metricname: document.getElementById("metricname").value
+		}
 		if(document.getElementById("metricredirect").value) data["metricredirect"] = document.getElementById("metricredirect").value;
 		else data["metricredirect"] = "";
 		if(document.getElementById("metricname").value){
@@ -96,8 +98,9 @@
 			plot: document.getElementById("plot").value,
 			category: document.getElementById("displaycategory").checked,
 			user: document.getElementById("displayuser").checked,
-			timeFrame:document.getElementById("timeFrame").value
+			timeFrame:""
 		};
+		if(document.getElementById("displaytime").checked) data["timeFrame"] = document.getElementById("timeFrame").value;
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", "/auraAdmin/createDisplay");
 		xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
