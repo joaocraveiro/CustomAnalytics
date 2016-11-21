@@ -10,7 +10,8 @@ libraryDependencies ++= Seq(
   javaJdbc,
   cache,
   javaWs,
-  javaJpa  
+  javaJpa,
+  evolutions
 )
 
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4.1211"
