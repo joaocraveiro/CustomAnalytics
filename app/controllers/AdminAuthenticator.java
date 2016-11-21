@@ -15,6 +15,6 @@ public class AdminAuthenticator extends Security.Authenticator {
 
     @Override
     public Result onUnauthorized(Context ctx) {
-        return redirect("/");
+        return redirect("/login");
     }
 }

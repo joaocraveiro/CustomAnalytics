@@ -24,6 +24,8 @@ public class Aura extends Model {
 
     public String userToken =  new BigInteger(130, (new SecureRandom())).toString(32);; //used to create new entries
 
+    public String template;
+
     @OneToMany(cascade=CascadeType.ALL, mappedBy="aura")
     public List<Metric> metrics = new ArrayList<Metric>();
 

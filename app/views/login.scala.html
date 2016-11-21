@@ -1,11 +1,11 @@
-@main("Aurasma Custom Analytics", false) {    
+@main("Aurasma Custom Analytics", false,"") {    
 		
 	<br>	
-	<form class="form-signin">
-		<input id="aura" class="form-control" type="text" placeholder="Aura Name"/>
-		<input id="code" class="form-control" type="password" placeholder="Password" />
-		<button type="submit" class="btn btn-lg btn-primary btn-block" onclick="newaura()">Login</button>
-		</form>
+	<div class="signin">
+		<input id="aura" class="control" type="text" placeholder="Aura Name"/>
+		<input id="code" class="control" type="password" placeholder="Password"/>
+		<button class="btn btn-lg btn-primary btn-block" onclick="newaura()">Login</button>
+	</div>
 
 	<script>
 
@@ -16,7 +16,10 @@
 		var data = {aura:aura,code:code};
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function () {
-   			if(xhr.readyState == XMLHttpRequest.DONE) window.location = '/';
+   			if(xhr.readyState == XMLHttpRequest.DONE){
+   				console.log(xhr.readyState);
+   				window.location = '/';
+   			}
   		};
 		xhr.open("POST", "/authenticate");
 		xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');

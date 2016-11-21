@@ -6,12 +6,14 @@
 GET         /                                               controllers.Application.index()
 POST        /authenticate                                   controllers.Application.authenticate()
 GET         /logout                                         controllers.Application.logout()
+GET         /login                                          controllers.Application.login()
 
 GET         /:auraName                                      controllers.Application.auralytics(auraName: String)
 GET         /auraAdmin/:auraName                            controllers.Application.auraAdmin(auraName: String)
 
 GET         /newAura/:auraName                              controllers.Application.createAura(auraName: String)
 POST        /auraAdmin/newMetric                            controllers.Application.createMetric()
+POST        /auraAdmin/saveTemplate                         controllers.Application.saveTemplate()
 POST        /auraAdmin/createDisplay                        controllers.Application.createDisplay()
 GET			/auraAdmin/:auraName/deleteMetric/:metricId     controllers.Application.deleteMetric(auraName: String, metricId: Long)
 GET			/auraAdmin/:auraName/deleteDisplay/:displayId   controllers.Application.deleteDisplay(auraName: String, displayId: Long)

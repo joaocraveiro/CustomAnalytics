@@ -2,21 +2,23 @@
 
 @import play.api.libs.json.Json
 
-@main("Aurasma Custom Analytics", false) {   
+@main("Aurasma Custom Analytics", false, aura.template) {   
 	
 	<h3>@aura.name</h3>
-	
+
 	@for(display <- aura.displays){	
 	<br>
 		@display.name (@display.metric.name)<br>		
 		@if(display.metric.metricEntries.isEmpty){
             <h4>No data available yet!</h4>
     	} else {
-    		<div id="@display.name"></div>
+    	<div class="metricContainer">
+    		<div class="metric" id="@display.name"></div>
+		</div>
 		}
 	}
 
-	<script>		
+	<script>
 		@for(display <- aura.displays){
 			var data = JSON.parse("@display.getData(profileId)".replace(/&quot;/g, '\"').replace(/=/g, ':'));
 			var plotdata = [];

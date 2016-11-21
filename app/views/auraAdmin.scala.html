@@ -1,16 +1,17 @@
 @(aura: Aura)
 
-@main("Aurasma Custom Analytics", true) {   
+@main("Aurasma Custom Analytics", true, "") {   
 	
 	Name: @aura.name<br>
 	Admin password: @aura.adminToken<br>
-
 	<br>
+	
 	<button onclick="openPublicPage()">Open public page</button>
+	<br>
 	<br>
 	
 	<br>
-	Metrics:<br>
+	<h3>Metrics</h3><br>
 	<ul>
 	@for(metric <- aura.metrics){
 		<li>@metric.name - Entries: @metric.metricEntries.size() <a href="@aura.name/deleteMetric/@metric.id">delete</a></li>
@@ -18,7 +19,7 @@
 	</ul>
 
 	<br>
-	Displays:<br>
+	<h3>Displays</h3><br>
 	<ul>
 	@for(display <- aura.displays){
 		<li>
@@ -38,12 +39,21 @@
 	}
 	</ul>
 
+	<h3>Template</h3>
+	<textarea id="template" rows="5" cols=60>	
+		@aura.template		
+	</textarea><br>
+	<button onclick="saveTemplate()">Save template</button><span id="saving" style="visibility:hidden">&nbsp;saving...</span><br>
 	<br>
-		<h3>Actions</h3>
+
+	<br>
+		<h3>Metric Creation</h3>
 		Name: <input id="metricname" type="text" /><br>
 		Redirect: <input id="metricredirect" type="text" /><br>
 		<button onclick="newMetric()">Create Metric</button>
 	<br><br><br>
+
+	<h3>Display Creation</h3>
 		Name: <input id="displayname" type="text" /><br>
 		Metric: <select id="displaymetric">
 		@for(metric <- aura.metrics){ <option value="@metric.name">@metric.name</option> }  
@@ -73,7 +83,8 @@
     <br>
 
 
-	<script>
+	<script>	
+
 	function timeChange(){
 		console.log(document.getElementById("displayuser").value);
 		if(document.getElementById("displaytime").checked){			
@@ -110,8 +121,8 @@
 			metric: document.getElementById("displaymetric").value,
 			plot: document.getElementById("plot").value,
 			category: document.getElementById("displaycategory").checked,
-			user: document.getElementById("displayuser").checked,
-			timeFrame:""
+			user: document.getElementById("displayuser").checked,		
+			timeFrame:""			
 		};
 		if(document.getElementById("displaytime").checked) data["timeFrame"] = document.getElementById("timeFrame").value;
 		var xhr = new XMLHttpRequest();
@@ -122,6 +133,27 @@
 		xhr.onloadend = function () {
     		var statusCode = xhr.status;
    			if(statusCode == 200) window.location.href = '/auraAdmin/' + "@aura.name";
+  		};
+	}
+
+	function saveTemplate(){	
+		var data = {
+			auraName: "@aura.name",		
+			template: document.getElementById("template").value
+		};		
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "/auraAdmin/saveTemplate");
+		xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+  		xhr.send(JSON.stringify(data));
+  		var savingLabel = document.getElementById("saving");
+  		savingLabel.innerHTML="saving...";
+  		savingLabel.style.visibility = "visible";
+
+		xhr.onloadend = function () {
+    		var statusCode = xhr.status;
+   			if(statusCode == 200) savingLabel.innerHTML = " saved";
+   			else savingLabel.innerHTML = " error";
+   			//document.getElementById("saving").style.visibility = "hidden";
   		};
 	}
 

@@ -22,9 +22,9 @@ public class Application extends Controller {
      * Renders the index view that lists all the registered auras.<br>
      * @return 200 OK
      */
+    @Security.Authenticated(AdminAuthenticator.class)
     public Result index() {
     	String ses = session().get("aura");
-        if(ses == null) return ok(login.render());
     	if(ses.equals("superadmin")) return ok(index.render(Aura.find.all(),true));
     	else{    		
     		return ok(index.render(Aura.find.where().eq("id", Long.parseLong(ses)).findList(),false));
@@ -34,6 +34,10 @@ public class Application extends Controller {
     public Result logout(){
     	session().clear();
     	return redirect("/login");
+    }
+
+    public Result login(){
+        return ok(login.render());
     }
 
     public Result authenticate(){
@@ -154,6 +158,22 @@ public class Application extends Controller {
         display.timeFrame = timeFrame;
 		display.save();
 		return ok();
+    }
+
+    @Security.Authenticated(AdminAuthenticator.class)
+    public Result saveTemplate(){
+        JsonNode json = request().body().asJson();
+        String auraName = json.get("auraName").asText();
+        Aura aura = Aura.getAuraByName(auraName);
+        if(aura == null){
+            System.out.println("Aura " + auraName + " doesn't exist");
+            return badRequest();
+        }
+        String template = json.get("template").asText();        
+        aura.template = template;
+        aura.save();
+        aura = Aura.getAuraByName(auraName);
+        return ok();
     }
 		
     public Result createMetricEntry(String auraName, String metricName, String user, String category, Integer value, String mode) {

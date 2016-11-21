@@ -1,0 +1,1 @@
+ALTER TABLE aura ADD COLUMN template varchar(255);
