@@ -6,8 +6,7 @@ create table aura (
   id                            bigserial not null,
   name                          varchar(255),
   admin_token                   varchar(255),
-  user_token                    varchar(255),
-  template                      varchar(255),
+  user_token                    varchar(255),  
   constraint pk_aura primary key (id)
 );
 
