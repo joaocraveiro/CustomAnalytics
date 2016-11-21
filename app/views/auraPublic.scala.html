@@ -9,13 +9,12 @@
 	@for(display <- aura.displays){	
 	<br>
 		@display.name (@display.metric.name)<br>		
-		@if(display.metric.metricEntries.isEmpty){
+		<!-- @if(display.metric.metricEntries.isEmpty){
             <h4>No data available yet!</h4>
-    	} else {
+    	} else { }-->
     	<div class="metricContainer">
     		<div class="metric" id="@display.name"></div>
-		</div>
-		}
+		</div>		
 	}
 
 	<script>
