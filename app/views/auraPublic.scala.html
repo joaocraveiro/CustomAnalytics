@@ -18,8 +18,8 @@
 	}
 
 	<script>
-		@for(display <- aura.displays){
-			var data = JSON.parse("@display.getData(profileId)".replace(/&quot;/g, '\"').replace(/=/g, ':'));
+		@for(display <- aura.displays){			
+			var data = JSON.parse("@display.getData(profileId)".replace(/&quot;/g, '\"').replace(/=/g, ':'));			
 			var plotdata = [];
 			for(key in data) plotdata.push({label:key,value:data[key]});
 
@@ -32,7 +32,7 @@
 			@if(display.plot.equals("line")){
 				new Morris.Line({element: "@display.name",
 				    data: plotdata,
-				    xkey: 'key',
+				    xkey: 'label',
 				    ykeys: ['value'],
 				    labels: ['Value']
 				});
