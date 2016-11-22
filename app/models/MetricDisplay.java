@@ -71,7 +71,7 @@ public class MetricDisplay extends Model {
         }
 
         else {
-            // EVENTUALLY WE SHOULD HAVE A CACHE FOR THIS :) OR DO WITH WITH A SPECIFIC FRAMEWORK FOR THE PURPOSE
+            // EVENTUALLY WE SHOULD HAVE A CACHE FOR THIS :) OR DO IT WITH WITH A SPECIFIC FRAMEWORK FOR THE PURPOSE
             for (MetricEntry entry : metric.metricEntries) {
                 if (profileId == null || profileId.equals(entry.profile.id)) {
                     String key = "\"";
@@ -79,7 +79,10 @@ public class MetricDisplay extends Model {
                         if (entry.category == null) key += "Not specified" + " ";
                         else key += entry.category + " ";
                     }
-                    if (groupUser) key += entry.profile.id + " ";
+                    if (groupUser){
+                      if(entry.profile.name == null) key += entry.profile.id + " ";
+                      else key += entry.profile.name + " ";
+                    }
                     if (!timeFrame.isEmpty()) key += formatter.format(entry.date) + " ";
                     key = key.trim();
                     key += "\"";

@@ -1,29 +1,25 @@
-@(auraName: String, metricName: String, value: Integer)
+@(auraName: String, metricName: String, category: String, value: Integer)
 
 @main(auraName, false, "") {   
-	
-	Insert your name: @* retrieve from local storage*@
-	<input type="text" id="playerName">
-	</br>
-	Score: @value
-	</br>
-	<button onclick="openURL('@routes.Application.createMetricEntry(auraName,metricName,"",""+value,1,"")')">Submit</button>
-		
+							
 	<script>
-	
-	
-	document.addEventListener("DOMContentLoaded", function(event) { 
-  		var name = localStorage.getItem("lunAR_playerName");		
-		if(name != null) name = JSON.parse(name);
-		document.getElementById("playerName").value = name;		
-	});
-	
-	function openURL(url){		
-		var url = url;
-		//url = url.substr(0, url.indexOf("//")) + "/" + document.getElementById("playerName").value + url.substr(url.indexOf("//")+1);
-		localStorage.setItem("lunAR_playerName",JSON.stringify(document.getElementById("playerName").value));
-		window.open(url,"_self");
-	}
-	
+		var user = prompt("Please enter your name", "Harry Potter");		
+		var data = {
+			auraName: "@auraName",
+			metricName: "@metricName",
+			user: user,
+			value: @value
+		}				
+		var xhr = new XMLHttpRequest();
+		var url = "/register/" + "@auraName" + "/" + "@metricName" + "?user=" + user + "&value=" + @value;
+		if("@category") url += "&category=" + "@category";
+		xhr.open("GET", url);
+		xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+  		xhr.send(JSON.stringify(data));
+
+		xhr.onloadend = function () {
+    		var statusCode = xhr.status;
+   			if(statusCode == 200) window.location.href = '/' + "@auraName";
+  		};		
 	</script>
 }

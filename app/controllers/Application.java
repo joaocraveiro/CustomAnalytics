@@ -176,7 +176,7 @@ public class Application extends Controller {
         return ok();
     }
 		
-    public Result createMetricEntry(String auraName, String metricName, String user, String category, Integer value, String mode) {
+    public Result createMetricEntry(String auraName, String metricName, String user, String category, Integer value) {
 
     	// validate public code
 
@@ -193,21 +193,27 @@ public class Application extends Controller {
 		}
 
 		MetricEntry metricEntry = new MetricEntry();
-
-		// mode: request username, category or both. Maybe be able to list existing between categories in some cases?
-        if(mode == null) ok(auralytics.render(aura.name, aura.metrics, aura.displays));
-        else if(mode.equals("form")) return ok(views.html.nameMetricEntry.render(auraName,metricName,value));
-        
-        // User: if provided assign
-    	play.mvc.Http.Cookie c = request().cookies().get("aurasma-customanalytics");
-		if(c != null) metricEntry.profile = Profile.getProfileById(c.value());
-		if(metricEntry.profile == null){
-			Profile profile = new Profile();
-			profile.registerDate = new Date();			
-			profile.save();
-			metricEntry.profile = profile;			
-			response().setCookie("aurasma-customanalytics", ""+profile.id, 86400);
-		}
+                
+        if(user != null){ // if user is provided we give a profile accordingly
+            Profile profile = Profile.getProfileByName(user);
+            if(profile == null){
+                profile = new Profile();
+                profile.name = user;
+                profile.registerDate = new Date();
+                profile.save();                
+            }
+            metricEntry.profile = profile;
+        } else { // if no user is provided we use a cookie to track a profile
+        	play.mvc.Http.Cookie c = request().cookies().get("aurasma-customanalytics");
+    		if(c != null) metricEntry.profile = Profile.getProfileById(c.value());
+    		if(metricEntry.profile == null){
+    			Profile profile = new Profile();
+    			profile.registerDate = new Date();			
+    			profile.save();
+    			metricEntry.profile = profile;			
+    			response().setCookie("aurasma-customanalytics", ""+profile.id, 86400);
+    		}
+        }
 		
 		// Category: can be null
         metricEntry.category = category;
@@ -227,6 +233,10 @@ public class Application extends Controller {
             return auralytics(aura.name);
         else
             return ok(message.render(metric.redirectAddress));
+    }
+
+    public Result createNamedMetric(String auraName, String metricName, String category, Integer value){
+        return ok(views.html.nameMetricEntry.render(auraName,metricName,category,value));
     }
 
     public Result createMultiMetricEntries(String auraName, String metrics, String categories) {
