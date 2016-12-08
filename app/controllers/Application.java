@@ -86,17 +86,17 @@ public class Application extends Controller {
     
     public Result auralytics(String auraName) {
         Aura aura = Aura.getAuraByName(auraName);
-        if(aura == null){    
+        if(aura == null){
         	System.out.println("Aura " + auraName + " doesn't exist");
             return index();
-        }    
+        }
         String login = session().get("aura");
         if(login == null){
             play.mvc.Http.Cookie c = request().cookies().get("aurasma-customanalytics");    
             if(c != null)
                 return ok(auraPublic.render(aura,c.value()));
             else
-                return index();
+                return ok(auraPublic.render(aura,null));
         }
         else if(login.equals("superadmin") || Aura.getAuraById(login).name.equals(auraName))
             return ok(auraPublic.render(aura,null));
