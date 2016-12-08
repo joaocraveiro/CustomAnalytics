@@ -25,6 +25,7 @@ public class Application extends Controller {
     @Security.Authenticated(AdminAuthenticator.class)
     public Result index() {
     	String ses = session().get("aura");
+        if(ses == null) ok(login.render());
     	if(ses.equals("superadmin")) return ok(index.render(Aura.find.all(),true));
     	else{    		
     		return ok(index.render(Aura.find.where().eq("id", Long.parseLong(ses)).findList(),false));
