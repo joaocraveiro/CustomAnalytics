@@ -12,7 +12,9 @@
 			<br>
 			<div id="metricArea">
 				<div id="metricTitle">
-					@display.name (@display.metric.name)<br>
+					@display.name
+					<span class="originalMetricName">(@display.metric.name)</span>
+					<span class="textMetricLineBreak"><br></span>
 				</div>
 					<!-- @if(display.metric.metricEntries.isEmpty){
 			            <h4>No data available yet!</h4>
