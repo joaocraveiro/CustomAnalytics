@@ -7,16 +7,20 @@
 	<h3 id="auraTitle">@aura.name</h3>
 
 	<div id="metricsContainer">
-	@for(display <- aura.displays){	
-	<br>
-		@display.name (@display.metric.name)<br>		
-		<!-- @if(display.metric.metricEntries.isEmpty){
-            <h4>No data available yet!</h4>
-    	} else { }-->
-    	<div class="metricContainer">
-    		<div class="metric" id="@display.name"></div>
-		</div>		
-	}
+		@for(display <- aura.displays){
+		<br>
+		<div id="metricArea">
+			<div id="metricTitle">
+				@display.name (@display.metric.name)<br>
+			</div>
+				<!-- @if(display.metric.metricEntries.isEmpty){
+		            <h4>No data available yet!</h4>
+		    	} else { }-->
+		    	<div class="metricContainer">
+	    		<div class="metric" id="@display.name"></div>
+			</div>		
+		</div>
+		}
 	</div>
 
 	<script>
