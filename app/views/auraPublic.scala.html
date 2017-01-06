@@ -4,8 +4,9 @@
 
 @main("Aurasma Custom Analytics", false, aura.template) {   
 	
-	<h3>@aura.name</h3>
+	<h3 id="auraTitle">@aura.name</h3>
 
+	<div id="metricsContainer">
 	@for(display <- aura.displays){	
 	<br>
 		@display.name (@display.metric.name)<br>		
@@ -16,6 +17,7 @@
     		<div class="metric" id="@display.name"></div>
 		</div>		
 	}
+	</div>
 
 	<script>
 		@for(display <- aura.displays){			
